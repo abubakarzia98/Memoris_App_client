@@ -66,8 +66,7 @@ const Auth = () => {
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
-      client_id:
-        '853997970173-8kmo1gvpcfpdk56gqgdp3n3aqs8hdoup.apps.googleusercontent.com',
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
     });
 
@@ -151,6 +150,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
-// 853997970173-8kmo1gvpcfpdk56gqgdp3n3aqs8hdoup.apps.googleusercontent.com
-// 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
