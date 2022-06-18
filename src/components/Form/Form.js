@@ -3,11 +3,13 @@ import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import usestyles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { createPost, updatePost } from '../../actions/posts';
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = usestyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'));
   const post = useSelector(({ posts }) =>
     currentId ? posts.posts.find((p) => p._id === currentId) : null
@@ -37,7 +39,7 @@ const Form = ({ currentId, setCurrentId }) => {
     e.preventDefault();
 
     if (!currentId) {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
     } else {
       dispatch(
         updatePost(currentId, { ...postData, name: user?.result?.name })
@@ -48,7 +50,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   if (!user?.result?.name) {
     return (
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={6}>
         <Typography variant="h6" align="center">
           Please Sign In to create your own memories and like other's memories.
         </Typography>
@@ -57,7 +59,7 @@ const Form = ({ currentId, setCurrentId }) => {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate
