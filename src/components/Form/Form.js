@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
-import usestyles from './styles';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
+import usestyles from './styles';
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = usestyles();
@@ -17,7 +17,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const [postData, setpostData] = useState({
     title: '',
     message: '',
-    tag: '',
+    tags: '',
     selectedFile: '',
   });
 
@@ -26,7 +26,7 @@ const Form = ({ currentId, setCurrentId }) => {
     setpostData({
       title: '',
       message: '',
-      tag: '',
+      tags: '',
       selectedFile: '',
     });
   };
@@ -88,13 +88,13 @@ const Form = ({ currentId, setCurrentId }) => {
           }
         />
         <TextField
-          name="tag"
+          name="tags"
           variant="outlined"
           label="Tags"
           fullWidth
-          value={postData.tag}
+          value={postData.tags}
           onChange={(e) =>
-            setpostData({ ...postData, tag: e.target.value.split(',') })
+            setpostData({ ...postData, tags: e.target.value.split(',') })
           }
         />
         <div className={classes.fileInput}>

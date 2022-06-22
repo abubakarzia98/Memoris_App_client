@@ -7,11 +7,11 @@ import {
   Typography,
   Container,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import jwt_decode from 'jwt-decode';
 import Input from './Input';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { signin, signup } from '../../actions/auth';
 import usestyles from './styles';
 

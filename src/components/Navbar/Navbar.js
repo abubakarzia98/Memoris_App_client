@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import memoriesLogo from '../../images/memoriesLogo.png';
 import memoriesText from '../../images/memoriesText.png';
 import usestyles from './styles';
@@ -64,14 +64,11 @@ const Navbar = () => {
             </Button>
           </div>
         ) : (
-          <Button
-            component={Link}
-            to="/auth"
-            variant="contained"
-            color="primary"
-          >
-            Sign In
-          </Button>
+          <Link to="/auth" className={classes.link}>
+            <Button variant="contained" color="primary">
+              Sign In
+            </Button>
+          </Link>
         )}
       </Toolbar>
     </AppBar>

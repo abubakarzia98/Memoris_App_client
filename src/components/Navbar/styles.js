@@ -32,6 +32,9 @@ export default makeStyles((theme) => ({
       width: 'auto',
     },
   },
+  link: {
+    textDecoration: 'none',
+  },
   profile: {
     display: 'flex',
     justifyContent: 'space-between',

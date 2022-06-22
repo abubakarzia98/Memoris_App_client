@@ -6,17 +6,18 @@ import {
   CardMedia,
   Button,
   Typography,
-  CardActionArea,
 } from '@material-ui/core';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import {
+  ThumbUpAltIcon,
+  ThumbUpAltOutlinedIcon,
+  DeleteIcon,
+  MoreHorizIcon,
+} from '@mui/icons-material';
 import moment from 'moment';
-import usestyles from './styles';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { deletePost, likePost } from '../../../actions/posts';
+import usestyles from './styles';
 
 const Post = ({ post, setCurrentId }) => {
   const classes = usestyles();
@@ -55,51 +56,56 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   return (
-    <Card className={classes.card} raised elevation={6}>
-      <CardActionArea onClick={openPost}>
-        <CardMedia
-          className={classes.media}
-          image={post.selectedFile}
-          title={post.title}
-        />
-        <div className={classes.overlay}>
-          <Typography variant="h6">{post.name}</Typography>
-          <Typography variant="body2">
-            {moment(post.createdAt).fromNow()}
-          </Typography>
-        </div>
-        {(user?.result?.googleId === post?.creator ||
-          user?.result?._id === post?.creator) && (
-          <div className={classes.overlay2}>
-            <Button
-              style={{ color: 'white' }}
-              size="small"
-              onClick={() => setCurrentId(post._id)}
-            >
-              <MoreHorizIcon fontSize="default" />
-            </Button>
-          </div>
-        )}
-        <div className={classes.details}>
-          <Typography variant="body2" color="textSecondary">
-            {post.tag.map((tag) => `#${tag}`)}
-          </Typography>
-        </div>
-        <Typography className={classes.title} variant="h5" gutterBottom>
-          {post.title}
+    <Card onClick={openPost} className={classes.card} raised elevation={6}>
+      <CardMedia
+        className={classes.media}
+        image={post.selectedFile || '/images/noimage.jpg'}
+        title={post.title}
+      />
+      <div className={classes.overlay}>
+        <Typography variant="h6">{post.name}</Typography>
+        <Typography variant="body2">
+          {moment(post.createdAt).fromNow()}
         </Typography>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {post.message}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      </div>
+      {(user?.result?.googleId === post?.creator ||
+        user?.result?._id === post?.creator) && (
+        <div className={classes.overlay2} name="edit">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentId(post._id);
+            }}
+            style={{ color: 'white' }}
+            size="small"
+          >
+            <MoreHorizIcon fontSize="default" />
+          </Button>
+        </div>
+      )}
+      <div className={classes.details}>
+        <Typography variant="body2" color="textSecondary">
+          {post.tags.map((tags) => `#${tags}`)}
+        </Typography>
+      </div>
+      <Typography className={classes.title} variant="h5" gutterBottom>
+        {post.title}
+      </Typography>
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.message}
+        </Typography>
+      </CardContent>
+
       <CardActions className={classes.cardActions}>
         <Button
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={() => dispatch(likePost(post._id))}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(likePost(post._id));
+          }}
         >
           <Likes />
         </Button>
@@ -108,7 +114,10 @@ const Post = ({ post, setCurrentId }) => {
           <Button
             size="small"
             color="primary"
-            onClick={() => dispatch(deletePost(post._id))}
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(deletePost(post._id));
+            }}
           >
             <DeleteIcon fontSize="small" />
             Delete

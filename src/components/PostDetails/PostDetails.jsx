@@ -1,26 +1,25 @@
-import React, { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   CircularProgress,
   Divider,
   Typography,
 } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import CommentSection from './CommentSection';
 import { getPost, getPostsBySearch } from '../../actions/posts';
 import usestyles from './styles';
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = usestyles();
   const { id } = useParams();
-
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
-  console.log('id', recommendedPosts);
 
   const openPost = (_id) => navigate(`/posts/${_id}`);
 
@@ -30,9 +29,16 @@ const PostDetails = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPostsBySearch({ search: 'none', tags: post.tag.join(',') }));
+      dispatch(getPostsBySearch({ search: '', tags: post.tags.join(',') }));
     }
   }, [post]);
+  useEffect(() => {
+    if (posts) {
+      const recPosts =
+        posts.length > 0 && posts.filter(({ _id }) => _id !== id);
+      setRecommendedPosts(recPosts);
+    }
+  }, [posts]);
 
   if (!post) return null;
 
@@ -57,7 +63,7 @@ const PostDetails = () => {
             color="textSecondary"
             component="h2"
           >
-            {post.tag.map((tag) => `#${tag} `)}
+            {post.tags.map((tags) => `#${tags} `)}
           </Typography>
           <Typography gutterBottom variant="body1" component="p">
             {post.message}
@@ -71,9 +77,7 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
@@ -87,36 +91,39 @@ const PostDetails = () => {
           />
         </div>
       </div>
-      {recommendedPosts.length && (
+
+      {recommendedPosts && recommendedPosts.length > 0 && (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">
             You might also like:
           </Typography>
           <Divider />
           <div className={classes.recommendedPosts}>
-            {recommendedPosts.map(
-              ({ title, message, name, selectedFile, _id, likes }) => (
-                <div
-                  style={{ margin: '20px', cursor: 'pointer' }}
-                  key={_id}
-                  onClick={() => openPost(_id)}
-                >
-                  <Typography gutterBottom variant="h6">
-                    {title}
-                  </Typography>
-                  <Typography gutterBottom variant="subtitle2">
-                    {name}
-                  </Typography>
-                  <Typography gutterBottom variant="subtitle2">
-                    {message}
-                  </Typography>
-                  <Typography gutterBottom variant="subtitle1">
-                    Likes: {likes.length}
-                  </Typography>
-                  <img src={selectedFile} width="200px" />
-                </div>
-              )
-            )}
+            {recommendedPosts &&
+              recommendedPosts.length > 0 &&
+              recommendedPosts.map(
+                ({ title, message, name, selectedFile, _id, likes }) => (
+                  <div
+                    style={{ margin: '20px', cursor: 'pointer' }}
+                    key={_id}
+                    onClick={() => openPost(_id)}
+                  >
+                    <Typography gutterBottom variant="h6">
+                      {title}
+                    </Typography>
+                    <Typography gutterBottom variant="subtitle2">
+                      {name}
+                    </Typography>
+                    <Typography gutterBottom variant="subtitle2">
+                      {message}
+                    </Typography>
+                    <Typography gutterBottom variant="subtitle1">
+                      Likes: {likes.length}
+                    </Typography>
+                    <img src={selectedFile} width="200px" alt="PostImage" />
+                  </div>
+                )
+              )}
           </div>
         </div>
       )}

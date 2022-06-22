@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Grid, CircularProgress } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import Post from './Post/Post';
 import usestyles from './styles';
 
@@ -14,7 +14,7 @@ const Posts = ({ setCurrentId }) => {
     <CircularProgress />
   ) : (
     <Grid
-      className={classes.container}
+      className={classes.mainContainer}
       container
       alignItems="stretch"
       spacing={3}
