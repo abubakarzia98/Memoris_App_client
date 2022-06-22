@@ -7,12 +7,10 @@ import {
   Button,
   Typography,
 } from '@material-ui/core';
-import {
-  ThumbUpAltIcon,
-  ThumbUpAltOutlinedIcon,
-  DeleteIcon,
-  MoreHorizIcon,
-} from '@mui/icons-material';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
